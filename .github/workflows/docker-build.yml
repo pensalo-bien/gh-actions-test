@@ -55,3 +55,11 @@ jobs:
           cosign sign --yes ghcr.io/${{ github.repository }}@${{ steps.build-and-push.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: "true"
+
+      - name: Verify image signature
+          run: |
+            cosign verify ghcr.io/${{ github.repository }}@${{ steps.build-and-push.outputs.digest }} \
+              --certificate-identity-regexp "https://github\.com/${{ github.repository }}/.*" \
+              --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
+          env:
+            COSIGN_EXPERIMENTAL: "true"
