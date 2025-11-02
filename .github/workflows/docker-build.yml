@@ -50,8 +50,8 @@ jobs:
       - name: Install cosign
         uses: sigstore/cosign-installer@v3
 
-      - name: Sign container image (keyless)
+      - name: Sign container image
         run: |
-          cosign sign --yes ${{ steps.meta.outputs.tags }}
+          cosign sign --yes ghcr.io/${{ github.repository }}@${{ steps.build-and-push.outputs.digest }}
         env:
           COSIGN_EXPERIMENTAL: "true"
